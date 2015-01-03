@@ -1,4 +1,4 @@
-alarman
+Alarman
 =======
 
-alarman
+Alarman wakes you by interval alarm.
