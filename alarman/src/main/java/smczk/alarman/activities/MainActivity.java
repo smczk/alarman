@@ -1,5 +1,6 @@
 package smczk.alarman.activities;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.widget.NumberPicker;
 import android.widget.Switch;
 
 import smczk.alarman.R;
+import smczk.alarman.services.AlarmService;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -20,22 +22,23 @@ public class MainActivity extends ActionBarActivity {
 
         final NumberPicker intervalMinutesPicker;
         final NumberPicker randomMinutesPicker;
+        final Intent intent = new Intent(MainActivity.this, AlarmService.class);
 
         intervalMinutesPicker = (NumberPicker)findViewById(R.id.numberPicker1);
         randomMinutesPicker = (NumberPicker)findViewById(R.id.numberPicker2);
 
         intervalMinutesPicker.setMinValue(0);
         intervalMinutesPicker.setMaxValue(20);
-        randomMinutesPicker.setMinValue(0);
-        randomMinutesPicker.setMaxValue(20);
+        randomMinutesPicker.setMinValue(1);
+        randomMinutesPicker.setMaxValue(21);
 
         intervalMinutesPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
 
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 
-                randomMinutesPicker.setMinValue(newVal);
-                randomMinutesPicker.setMaxValue(20 + newVal);
+                randomMinutesPicker.setMinValue(1 + newVal);
+                randomMinutesPicker.setMaxValue(21 + newVal);
             }
         });
 
@@ -51,14 +54,17 @@ public class MainActivity extends ActionBarActivity {
                 if(isChecked) {
                     intervalMinutesPicker.setEnabled(false);
                     randomMinutesPicker.setEnabled(false);
+                    intent.putExtra("INTERVAL", intervalMinutesPicker.getValue());
+                    intent.putExtra("RANDOM", randomMinutesPicker.getValue());
+                    startService(intent);
                 }else{
                     intervalMinutesPicker.setEnabled(true);
                     randomMinutesPicker.setEnabled(true);
+                    stopService(intent);
                 }
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
