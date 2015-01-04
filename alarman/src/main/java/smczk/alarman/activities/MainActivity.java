@@ -15,6 +15,8 @@ import smczk.alarman.services.AlarmService;
 
 public class MainActivity extends ActionBarActivity {
 
+    private Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +24,7 @@ public class MainActivity extends ActionBarActivity {
 
         final NumberPicker intervalMinutesPicker;
         final NumberPicker randomMinutesPicker;
-        final Intent intent = new Intent(MainActivity.this, AlarmService.class);
+        intent = new Intent(MainActivity.this, AlarmService.class);
 
         intervalMinutesPicker = (NumberPicker)findViewById(R.id.numberPicker1);
         randomMinutesPicker = (NumberPicker)findViewById(R.id.numberPicker2);
@@ -64,6 +66,13 @@ public class MainActivity extends ActionBarActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        stopService(intent);
+        super.onDestroy();
     }
 
     @Override

@@ -50,7 +50,7 @@ public class AlarmService extends Service {
 
         soundId = soundPool.load(this, R.raw.okite_02, 1);
 
-        return START_REDELIVER_INTENT;
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -89,6 +89,7 @@ public class AlarmService extends Service {
 
                     }catch (InterruptedException e) {
                         wakeLock.release();
+                        stopSelf();
                         break;
                     }
                 }
