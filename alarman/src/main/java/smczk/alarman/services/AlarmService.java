@@ -19,7 +19,7 @@ public class AlarmService extends Service {
     private NumberPicker randomMinutesPicker;
     private SoundPool soundPool;
     private int soundId;
-    private Random random;
+    private Random random = new Random();
     private Thread thread;
     private AudioManager audioManager;
     private PowerManager powerManager;
@@ -67,6 +67,7 @@ public class AlarmService extends Service {
 
     public void loopSoundTask(final int intervalMinutes, final int randomMinutes) {
 
+
         thread = new Thread(new Runnable() {
 
             @Override
@@ -82,7 +83,7 @@ public class AlarmService extends Service {
                             Thread.sleep(intervalMinutes * 60000);
                         }
 
-                        Thread.sleep(randomMinutes * 60000);
+                        Thread.sleep(random.nextInt(((randomMinutes - intervalMinutes) * 59999) + 1));
                         soundVol = audioManager.getStreamVolume(AudioManager.STREAM_RING);
 
                         soundPool.play(soundId, soundVol, soundVol, 0, 0, 1);
