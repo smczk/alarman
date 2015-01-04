@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.widget.NumberPicker;
 
 import java.util.Random;
 
 import smczk.alarman.R;
+
 
 public class AlarmService extends Service {
 
@@ -20,10 +22,14 @@ public class AlarmService extends Service {
     private Random random;
     private Thread thread;
     private AudioManager audioManager;
+    private PowerManager powerManager;
+    private PowerManager.WakeLock wakeLock;
 
     @Override
     public void onCreate() {
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
     }
 
     @Override
@@ -67,8 +73,9 @@ public class AlarmService extends Service {
             public void run() {
 
                 int soundVol;
-                while(true) {
+                wakeLock.acquire();
 
+                while(true) {
                     try{
 
                         if(intervalMinutes != 0) {
@@ -77,9 +84,11 @@ public class AlarmService extends Service {
 
                         Thread.sleep(randomMinutes * 60000);
                         soundVol = audioManager.getStreamVolume(AudioManager.STREAM_RING);
+
                         soundPool.play(soundId, soundVol, soundVol, 0, 0, 1);
 
                     }catch (InterruptedException e) {
+                        wakeLock.release();
                         break;
                     }
                 }
