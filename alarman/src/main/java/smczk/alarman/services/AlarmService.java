@@ -83,8 +83,8 @@ public class AlarmService extends Service {
                             Thread.sleep(intervalMinutes * 60000);
                         }
 
-                        Thread.sleep(random.nextInt(((randomMinutes - intervalMinutes) * 59999) + 1));
-                        soundVol = audioManager.getStreamVolume(AudioManager.STREAM_RING);
+                        Thread.sleep(random.nextInt(((randomMinutes - intervalMinutes) * 59000) + 1000));
+                        soundVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
                         soundPool.play(soundId, soundVol, soundVol, 0, 0, 1);
 
