@@ -24,12 +24,9 @@ public class MainActivity extends ActionBarActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         setContentView(R.layout.activity_main);
 
-        final NumberPicker intervalMinutesPicker;
-        final NumberPicker randomMinutesPicker;
+        final NumberPicker intervalMinutesPicker  = (NumberPicker)findViewById(R.id.numberPicker1);;
+        final NumberPicker randomMinutesPicker = (NumberPicker)findViewById(R.id.numberPicker2);;
         intent = new Intent(MainActivity.this, AlarmService.class);
-
-        intervalMinutesPicker = (NumberPicker)findViewById(R.id.numberPicker1);
-        randomMinutesPicker = (NumberPicker)findViewById(R.id.numberPicker2);
 
         intervalMinutesPicker.setMinValue(0);
         intervalMinutesPicker.setMaxValue(20);
@@ -51,9 +48,6 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                NumberPicker intervalMinutesPicker = (NumberPicker)findViewById(R.id.numberPicker1);
-                NumberPicker randomMinutesPicker = (NumberPicker)findViewById(R.id.numberPicker2);
 
                 if(isChecked) {
                     intervalMinutesPicker.setEnabled(false);
